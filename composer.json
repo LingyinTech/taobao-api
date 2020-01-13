@@ -1,0 +1,12 @@
+{
+  "name": "lingyin/taobao-api",
+  "description": "淘宝开放平台api",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+    }
+  }
+}
