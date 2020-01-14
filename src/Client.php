@@ -6,11 +6,17 @@ namespace lingyin\taobao;
 
 class Client
 {
+    const API_TEST_URL = 'http://gw.api.tbsandbox.com/router/rest';
     const API_URL = 'http://gw.api.taobao.com/router/rest';
     const FORMAT = 'json';
 
     protected $appKey;
     protected $secretKey;
+
+    protected $connectTimeout = 1;
+    protected $readTimeout = 2;
+
+    protected $env = 'product';
 
     /** 是否打开入参check**/
     protected $checkRequest = true;
@@ -23,6 +29,30 @@ class Client
     {
         $this->appKey = $appKey;
         $this->secretKey = $secretKey;
+    }
+
+    /**
+     * @param int $connectTimeout
+     */
+    public function setConnectTimeout($connectTimeout)
+    {
+        $this->connectTimeout = $connectTimeout;
+    }
+
+    /**
+     * @param int $readTimeout
+     */
+    public function setReadTimeout($readTimeout)
+    {
+        $this->readTimeout = $readTimeout;
+    }
+
+    /**
+     * @param string $env
+     */
+    public function setEnv($env)
+    {
+        $this->env = $env;
     }
 
     /**
@@ -51,17 +81,18 @@ class Client
         $params["sign"] = $this->generateSign(array_merge($apiParams, $params));
 
         $options = [
-            'connect_timeout' => 2,
-            'timeout' => 5,
+            'connect_timeout' => $this->connectTimeout,
+            'timeout' => $this->readTimeout,
         ];
         try {
             $client = new \GuzzleHttp\Client($options);
             $params = ['verify' => false, 'form_params' => $params];
-            $request = $client->request('POST', self::API_URL, $params);
+            $request = $client->request('POST', $this->getApiUrl(), $params);
             $response = $request->getBody();
             $content = $response->getContents();
             return \GuzzleHttp\json_decode($content, true);
         } catch (\Exception $e) {
+            var_dump($e->getMessage());
 
         }
 
@@ -81,5 +112,8 @@ class Client
         return strtoupper(md5($stringToBeSigned));
     }
 
-
+    protected function getApiUrl()
+    {
+        return 'product' == $this->env ? self::API_URL : self::API_TEST_URL;
+    }
 }
