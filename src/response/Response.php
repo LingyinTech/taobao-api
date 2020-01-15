@@ -90,6 +90,6 @@ class Response
 
     protected function getNodeByApiName($apiName)
     {
-        return implode('_', explode('.', $apiName));
+        return implode('_', explode('.', $apiName)) . '_response';
     }
 }
