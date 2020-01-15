@@ -4,7 +4,7 @@
 namespace lingyin\taobao\request\trade;
 
 
-use lingyin\taobao\AbstractRequest;
+use lingyin\taobao\request\AbstractRequest;
 
 class TradeGetRequest extends AbstractRequest
 {

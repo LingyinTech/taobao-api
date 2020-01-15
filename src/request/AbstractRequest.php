@@ -1,7 +1,7 @@
 <?php
 
 
-namespace lingyin\taobao;
+namespace lingyin\taobao\request;
 
 
 abstract class AbstractRequest
